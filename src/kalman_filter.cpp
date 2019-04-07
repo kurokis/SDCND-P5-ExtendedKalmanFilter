@@ -48,6 +48,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   double vx = x_(2);
   double vy = x_(3);
   if(fabs(px*px+py*py) < 0.0001){
+    // When px and py are both very close to zero,
+    // the angle and range rate become very sensitive to small perturbations.
+    // In such cases, this update step should be skipped, which implies that
+    // the mean state vector and the covariance matrix remain unchanged.
     return; 
   }
   double rho = sqrt(px*px+py*py);
